@@ -1,0 +1,138 @@
+syntax = "proto3";
+option go_package="../pb;pb";
+
+// 登录
+message ReqGateLogin {
+    string password = 1;
+    int32 from = 2;
+    uint32 gateId = 3;
+}
+
+// 登录成功
+message ResGateLogin {
+    int32 ret = 1;
+    uint32 gameId = 2;
+    uint32 roomId = 3;
+    uint32 hallId = 4;
+}
+
+// 离开
+message ReqGateLeave {
+    
+}
+
+// 踢出类型
+enum KickType {
+    Unknow = 0;   // Kick
+    Squeeze = 1;    // 挤号
+    GameNotFound = 2;   // 游戏服
+}
+
+// 踢人
+message GateKick {
+    KickType type = 1;
+}
+
+// 心跳
+message HeartBeat {
+    uint32 serverType = 1;
+    uint32 serverId = 2;
+}
+
+// 注册
+message Regist {
+    uint32 serverType = 1;
+    uint32 serverId = 2;
+}
+
+// 推送
+message GatePushMsg {
+    string data = 1;
+}
+
+// 请求房间列表
+message ReqRoomList {
+}
+
+// 房间信息
+message RoomInfo {
+    uint32 serverId = 1;
+    uint32 roomId = 2;
+    int32 tag = 3;
+}
+
+// 答复房间列表
+message ResRoomList {
+    repeated RoomInfo rooms = 1;
+}
+
+// 请求进入房间
+message ReqEnterRoom {
+    uint32 templeteId = 1;
+}
+
+// 进房答复
+message ResEnterRoom {
+    repeated uint32 uids = 1;
+}
+
+// 玩家离开房间
+message ReqLeaveRoom {
+    uint32 gateId = 1;
+    uint32 roomId = 2;
+}
+
+// 玩家离线
+message Offline {
+    
+}
+
+// 开始游戏
+message StartGame {
+    uint32 roomId = 1;   // 房间ID
+    uint32 hallId = 2;     // 大厅ID
+    repeated uint32 uids = 3;  // 所有玩家的uid
+    repeated uint32 gates = 4;     // 服务ID
+    uint32 tempId = 5;   // 模板ID
+}
+
+// 同步数据
+message SyncData {
+    string data = 1;
+    uint32 roomId = 2;
+    uint32 gameId = 3;
+}
+
+// 完成数据
+message Tap {
+    uint32 uid = 1;    // uid
+    uint32 roomId = 2;   // roomId
+    int32 tap = 3;    // x坐标
+    string tips = 4;    // 提示
+}
+
+// 空数据
+message Empty {
+    
+}
+
+// 游戏结束
+message GameOver {
+    string data = 1;    // 游戏结束
+    uint32 tempId = 2;   // 房间模板ID
+    uint32 roomId = 3;   // 房间ID
+}
+
+// 多播消息
+message MultiMsg {
+    repeated uint32 uids = 1;
+    bytes data = 2;
+}
+
+// 重连
+message Reconnect {
+    uint32 tempId = 1;
+    uint32 roomId = 2;
+    uint32 hallId = 3;
+    uint32 gateId = 4;
+}

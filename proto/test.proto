@@ -1,0 +1,8 @@
+syntax = "proto3";
+option go_package="./pb;pb";
+
+// 注册
+message Test {
+  string name = 1;
+  string password = 2;
+}

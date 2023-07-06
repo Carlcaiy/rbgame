@@ -1,0 +1,37 @@
+syntax = "proto3";
+option go_package="./pb;pb";
+
+// 坐下
+message SitDown{
+    uint32 seat = 1;
+}
+
+// 匹配
+message Matching{
+    
+}
+
+// 发牌
+message Fapai {
+    uint32 seat = 1;
+    repeated uint32 poker = 2;
+}
+
+// 叫地主
+message Jiaodizhu{
+    uint32 seat = 1;
+    uint32 option = 2;
+}
+
+// 通知
+message Notify {
+    uint32 id = 1;
+    uint32 seat = 2;
+}
+
+// 出牌
+message Chupai {
+    uint32 seat = 1;
+    uint32 operate = 2;
+    repeated uint32 poker = 3; 
+}

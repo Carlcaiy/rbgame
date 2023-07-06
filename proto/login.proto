@@ -1,0 +1,19 @@
+syntax = "proto3";
+option go_package="./pb;pb";
+
+// 注册
+message Regist {
+  string name = 2;
+  string password = 3;
+}
+
+// 登陆
+message Login {
+  fixed32 uid = 2;
+  string password = 3;
+}
+
+// 统一回复
+message Reply {
+  string info = 1;
+}
