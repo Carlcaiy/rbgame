@@ -10,10 +10,10 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-var pool *redis.Pool
+var redisPool *redis.Pool
 
 func init_conn() {
-	pool = &redis.Pool{
+	redisPool = &redis.Pool{
 		MaxIdle:     30,
 		MaxActive:   30,
 		IdleTimeout: time.Duration(time.Second),
@@ -52,7 +52,7 @@ func TestRedigo(t *testing.T) {
 }
 
 func rmslots() {
-	conn := pool.Get()
+	conn := redisPool.Get()
 	defer conn.Close()
 	cursor := 0
 	for {
@@ -90,7 +90,7 @@ func rmslots() {
 }
 
 func do() {
-	conn := pool.Get()
+	conn := redisPool.Get()
 	defer conn.Close()
 	reply, _ := redis.Strings(conn.Do("ZRANGE", "13:autoblack", 1, -1))
 	for i := range reply {
@@ -109,7 +109,7 @@ func do() {
 }
 
 func rmblackinfo() {
-	conn := pool.Get()
+	conn := redisPool.Get()
 	defer conn.Close()
 	cursor := 0
 	for {
@@ -152,7 +152,7 @@ func key_mutex() {
 	for i := 1; i < 5; i++ {
 		go func(idx int) {
 
-			conn := pool.Get()
+			conn := redisPool.Get()
 			defer conn.Close()
 			for {
 				ok, err := redis.Bool(conn.Do("SETNX", "key_mutex", strconv.Itoa(idx)))
@@ -184,7 +184,7 @@ func key_mutex() {
 
 // 虽然是pipeline，redis中的实现是是使用send、flush、receive来实现pipeline的功能
 func pipeline() {
-	conn := pool.Get()
+	conn := redisPool.Get()
 	defer conn.Close()
 	for i := 0; i < 10; i++ {
 		err := conn.Send("SET", fmt.Sprintf("myname:%d", i), i)

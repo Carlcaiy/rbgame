@@ -1,21 +1,20 @@
-package code
+package websocket
 
 import (
 	"bufio"
 	"io"
 	"net"
-	"rbgame/websocket/gopool"
 	"sync"
 	"time"
 
 	"github.com/gobwas/ws"
 )
 
-var pool *gopool.Pool
+var pool *Pool
 var poller *sync.Pool
 
 func init() {
-	pool = gopool.New(128)
+	pool = New(128)
 }
 
 func wsserve() {
@@ -59,8 +58,8 @@ func readPacket(conn io.Reader) (*Packet, error) {
 	defer putReadBuf(buf)
 
 	buf.Reset(conn)
-	frame, _ := ReadFrame(buf)
-	parsePacket(frame.Payload)
+	// frame, _ := ReadFrame(buf)
+	// parsePacket(frame.Payload)
 	return nil, nil
 }
 
@@ -69,7 +68,7 @@ func writePacket(conn io.Writer, pkt *Packet) error {
 	return nil
 }
 
-func (ch *Channel) Send(p Packet) {
+func (ch *Channel) Send(p *Packet) {
 	if ch.noWriterYet() {
 		pool.Schedule(ch.writer)
 	}
@@ -91,14 +90,14 @@ func (p *Packet) Bytes() []byte {
 
 // Channel wraps user connection.
 type Channel struct {
-	conn net.Conn    // WebSocket connection.
-	send chan Packet // Outgoing packets queue.
+	conn net.Conn     // WebSocket connection.
+	send chan *Packet // Outgoing packets queue.
 }
 
 func NewChannel(conn net.Conn) *Channel {
 	c := &Channel{
 		conn: conn,
-		send: make(chan Packet, 128),
+		send: make(chan *Packet, 128),
 	}
 
 	go c.reader()
@@ -122,7 +121,7 @@ func (c *Channel) writer() {
 	buf := bufio.NewWriter(c.conn)
 
 	for pkt := range c.send {
-		_ := writePacket(buf, pkt)
+		writePacket(buf, pkt)
 		buf.Flush()
 	}
 }

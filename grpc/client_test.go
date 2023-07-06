@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"rbgame/pb"
+	pb "rbgame/proto/grpc"
 	"testing"
 	"time"
 

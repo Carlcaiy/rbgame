@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"rbgame/pb"
+	pb "rbgame/proto/grpc"
 	"time"
 
 	"google.golang.org/grpc"

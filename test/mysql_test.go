@@ -1,8 +1,9 @@
-package main
+package test
 
 import (
 	"database/sql"
 	"fmt"
+	"testing"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -14,7 +15,7 @@ func checkError(err error) {
 	}
 }
 
-func main() {
+func TestSQL(t *testing.T) {
 	db, err := sql.Open("mysql", "domino:yAUpZwWnjfrPBsWD@tcp(192.168.1.129:3306)/gold_member?charset=utf8&parseTime=True&loc=Local")
 	checkError(err)
 	for i := 1000000; i < 1001000; i++ {

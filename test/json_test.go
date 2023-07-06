@@ -1,7 +1,8 @@
-package main
+package test
 
 import (
 	"fmt"
+	"testing"
 
 	"gopkg.in/yaml.v3"
 )
@@ -16,7 +17,7 @@ type TroopObj struct {
 	Count  int     `yaml:"num" json:"num"`
 }
 
-func main() {
+func TestJson(t *testing.T) {
 	obj := make([]TroopObj, 0)
 	str := []byte(`[{offset: 11,road: 608,fish: 11,delay:0,speed:0.105,apace:550,num:10},{offset:0,road:608,fish:11,delay:0,speed:0.105,apace:550,num:10}]`)
 	if err := yaml.Unmarshal(str, &obj); err != nil {
