@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "rbgame/proto/grpc"
 	"testing"
 	"time"
 
@@ -11,27 +10,31 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func client() pb.GreeterClient {
+func client() GreeterClient {
 	client, err := grpc.Dial("localhost:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
-	return pb.NewGreeterClient(client)
+	return NewGreeterClient(client)
 }
 
 func TestRPC(t *testing.T) {
-	reply, err := client().SayHello(context.Background(), &pb.HelloRequest{Name: "普通RPC"})
+	reply, err := client().OneToOne(context.Background(), &Request{Name: "hello"})
+	fmt.Println(reply, err)
+	reply, err = client().OneToOne(context.Background(), &Request{Name: "good"})
+	fmt.Println(reply, err)
+	reply, err = client().OneToOne(context.Background(), &Request{Name: ""})
 	fmt.Println(reply, err)
 }
 
 func TestStreamClient(t *testing.T) {
-	stream, err := client().SayHelloST(context.Background())
+	stream, err := client().MulToOne(context.Background())
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
 	for i := 0; i < 5; i++ {
-		if err := stream.Send(&pb.HelloRequest{Name: "客户端流式RPC"}); err != nil {
+		if err := stream.Send(&Request{Name: "客户端流式RPC"}); err != nil {
 			fmt.Println("Send err", err)
 			break
 		}
@@ -44,7 +47,7 @@ func TestStreamClient(t *testing.T) {
 }
 
 func TestStreamServer(t *testing.T) {
-	steam, err := client().SayHelloAgain(context.Background(), &pb.HelloRequest{Name: "服务端流式RPC"})
+	steam, err := client().OneToMul(context.Background(), &Request{Name: "yoyo"})
 	if err != nil {
 		panic(err)
 	}
@@ -60,16 +63,16 @@ func TestStreamServer(t *testing.T) {
 }
 
 func TestDoubleStream(t *testing.T) {
-	cc, err := client().SayHelloSSTT(context.Background())
+	cc, err := client().MulToMul(context.Background())
 	if err != nil {
 		panic(err)
 	}
 	go func() {
 		for i := 0; i < 10; i++ {
-			cc.Send(&pb.HelloRequest{Name: fmt.Sprintf("擦儿啊i=%d", i)})
+			cc.Send(&Request{Name: fmt.Sprintf("擦儿啊i=%d", i)})
 		}
 	}()
-	for {
+	for i := 0; i < 10; i++ {
 		xx, err := cc.Recv()
 		fmt.Println("recv", xx.String(), err)
 		if err != nil {

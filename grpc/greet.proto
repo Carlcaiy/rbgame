@@ -1,0 +1,21 @@
+syntax = "proto3";
+option go_package=".;main";
+
+// The greeting service definition.
+service Greeter {
+    // Sends a greeting
+    rpc OneToOne (Request) returns (Reply) {}
+    rpc MulToOne (stream Request) returns (Reply) {}
+    rpc OneToMul (Request) returns (stream Reply) {}
+    rpc MulToMul (stream Request) returns (stream Reply) {}
+}
+
+// The request message containing the user's name.
+message Request {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message Reply {
+    string message = 1;
+}
