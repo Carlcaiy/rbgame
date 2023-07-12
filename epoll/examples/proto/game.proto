@@ -1,0 +1,14 @@
+syntax = "proto3";
+option go_package = "../pb;pb";
+
+service RPC {
+    rpc GetName(RequestName) returns (ReplyName) {}
+}
+
+message RequestName {
+    int32 uid = 1;
+}
+
+message ReplyName {
+    string name = 1;
+}

@@ -155,7 +155,7 @@ func (p *Poll) LoopRun() {
 					p.Del(fd)
 					continue
 				}
-				fmt.Printf("Route uid:%d cmd:%d dst:%s\n", msg.UserID(), msg.Cmd(), msg.Dest())
+				// fmt.Printf("Route uid:%d cmd:%d dst:%s\n", msg.UserID(), msg.Cmd(), msg.Dest())
 				if p.handle != nil {
 					if err := p.handle.Route(conn, msg); err != nil {
 						fmt.Println(err)

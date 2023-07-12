@@ -78,7 +78,7 @@ func (l *Local) load_room_templete() {
 		l.templetes[i] = &RoomTemplete{
 			TempId:    i,
 			UserCount: 2,
-			GameId:    1,
+			GameID:    1,
 		}
 	}
 }
@@ -96,7 +96,7 @@ func (l *Local) gameOver(c *network.Conn, msg *network.Message) error {
 	if room != nil {
 		if room.sitCount == room.UserCount {
 			for _, user := range room.users {
-				bs, _ := network.Pack(user.UserId(), network.ST_Client, cmd.CountDown, &pb.Empty{})
+				bs, _ := network.Pack(user.UserID(), network.ST_Client, cmd.CountDown, &pb.Empty{})
 				l.SendToGate(user.gateID, bs)
 			}
 			l.Start(room.tevent)
@@ -176,7 +176,7 @@ func (l *Local) reqEnterRoom(c *network.Conn, msg *network.Message) error {
 					fmt.Printf("i:%d uid:%d gateid:%d\n", i, room.users[i].userID, room.users[i].gateID)
 				}
 				bs, _ := network.Pack(msg.UserID(), network.ST_Game, cmd.GameStart, greq)
-				l.SendToGame(room.GameId, bs)
+				l.SendToGame(room.GameID, bs)
 			}),
 		}
 		l.rooms[room.roomID] = room
@@ -184,7 +184,7 @@ func (l *Local) reqEnterRoom(c *network.Conn, msg *network.Message) error {
 
 	if room != nil {
 		user.roomID = room.roomID
-		user.gameID = room.GameId
+		user.gameID = room.GameID
 
 		for i := range room.users {
 			if room.users[i] == nil {
@@ -207,7 +207,7 @@ func (l *Local) reqEnterRoom(c *network.Conn, msg *network.Message) error {
 
 		if room.sitCount == room.UserCount {
 			for _, user := range room.users {
-				bs, _ := network.Pack(user.UserId(), network.ST_Client, cmd.CountDown, &pb.Empty{})
+				bs, _ := network.Pack(user.UserID(), network.ST_Client, cmd.CountDown, &pb.Empty{})
 				l.SendToGate(user.gateID, bs)
 			}
 
@@ -225,7 +225,7 @@ func (l *Local) reqLeaveRoom(c *network.Conn, msg *network.Message) error {
 	if room, ok := l.rooms[data.RoomId]; ok {
 		if room.status == 0 {
 			for i, u := range room.users {
-				if u.UserId() == msg.UserID() {
+				if u.UserID() == msg.UserID() {
 					room.users[i] = nil
 					room.sitCount -= 1
 					l.Stop(room.tevent)
@@ -243,7 +243,7 @@ func (l *Local) Close(conn *network.Conn) {
 	// 大厅服，清理所有相关桌子
 	if conn.ServerType == network.ST_Game {
 		for _, room := range l.rooms {
-			if room.GameId == conn.ServerId {
+			if room.GameID == conn.ServerId {
 				room.status = 0
 				room.sitCount = 0
 				for i := range room.users {

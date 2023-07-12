@@ -2,13 +2,14 @@ package local
 
 import (
 	"fmt"
+	"rbgame/epoll/examples/pb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 type GRPC struct {
-	RPCClient
+	pb.RPCClient
 	client *grpc.ClientConn
 	addr   string
 }
@@ -26,7 +27,7 @@ func (g *GRPC) Init() {
 		return
 	}
 	g.client = client
-	g.RPCClient = NewRPCClient(client)
+	g.RPCClient = pb.NewRPCClient(client)
 }
 
 func (g *GRPC) Close() {

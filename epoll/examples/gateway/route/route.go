@@ -69,7 +69,7 @@ func (l *Local) resGateLogin(c *network.Conn, msg *network.Message) error {
 		return fmt.Errorf("resGateLogin not find user:%d", msg.UserID())
 	}
 	user.hallId = pack.HallId
-	// user.gameId = pack.GameId
+	// user.gameId = pack.GameID
 	return nil
 }
 
@@ -99,9 +99,9 @@ func (l *Local) sync(c *network.Conn, msg *network.Message) error {
 func (l *Local) reqLeaveGate(c *network.Conn, msg *network.Message) error {
 	u, ok := c.Context().(*User)
 	if ok {
-		b, _ := network.Pack(u.UserId(), network.ST_Client, cmd.ResGateLeave, &pb.Empty{})
-		l.SendToClient(u.UserId(), b)
-		l.DelUser(u.UserId())
+		b, _ := network.Pack(u.UserID(), network.ST_Client, cmd.ResGateLeave, &pb.Empty{})
+		l.SendToClient(u.UserID(), b)
+		l.DelUser(u.UserID())
 		return nil
 	}
 	return fmt.Errorf("reqLeaveGate not find user: %d", c.Fd)
@@ -114,30 +114,30 @@ func (l *Local) Close(conn *network.Conn) {
 		u, ok := conn.Context().(*User)
 		if ok {
 			if u.gameId > 0 {
-				b, _ := network.Pack(u.UserId(), network.ST_Game, cmd.Offline, &pb.Offline{})
+				b, _ := network.Pack(u.UserID(), network.ST_Game, cmd.Offline, &pb.Offline{})
 				l.SendToSid(u.gameId, b, network.ST_Game)
 			} else if u.hallId > 0 {
-				b, _ := network.Pack(u.UserId(), network.ST_Hall, cmd.Offline, &pb.Offline{})
+				b, _ := network.Pack(u.UserID(), network.ST_Hall, cmd.Offline, &pb.Offline{})
 				l.SendToSid(u.hallId, b, network.ST_Hall)
 			}
 		}
 	} else if conn.ServerType == network.ST_Game {
 		l.RangeUser(func(u local.IUser) {
-			if u.GameId() == conn.ServerId {
-				b, _ := network.Pack(u.UserId(), network.ST_Client, cmd.GateKick, &pb.GateKick{
+			if u.GameID() == conn.ServerId {
+				b, _ := network.Pack(u.UserID(), network.ST_Client, cmd.GateKick, &pb.GateKick{
 					Type: pb.KickType_GameNotFound,
 				})
-				l.SendToClient(u.UserId(), b)
+				l.SendToClient(u.UserID(), b)
 			}
 		})
 	} else if conn.ServerType == network.ST_Client {
 		u, ok := conn.Context().(*User)
 		if ok {
 			if u.gameId > 0 {
-				b, _ := network.Pack(u.UserId(), network.ST_Game, cmd.Offline, &pb.Offline{})
+				b, _ := network.Pack(u.UserID(), network.ST_Game, cmd.Offline, &pb.Offline{})
 				l.SendToSid(u.gameId, b, network.ST_Game)
 			} else if u.hallId > 0 {
-				b, _ := network.Pack(u.UserId(), network.ST_Hall, cmd.Offline, &pb.Offline{})
+				b, _ := network.Pack(u.UserID(), network.ST_Hall, cmd.Offline, &pb.Offline{})
 				l.SendToSid(u.hallId, b, network.ST_Hall)
 			}
 		}

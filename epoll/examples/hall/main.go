@@ -24,7 +24,7 @@ func main() {
 
 	pollConfig := &network.PollConfig{
 		HeartBeat: time.Millisecond * 100,
-		MaxConn:   1000,
+		MaxConn:   50000,
 	}
 
 	network.Serve(serverConfig, pollConfig, route.NewLocal(serverConfig))

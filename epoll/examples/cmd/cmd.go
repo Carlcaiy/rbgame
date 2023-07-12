@@ -11,6 +11,7 @@ const (
 	ReqGateLeave = 1007 // 离开网关
 	ResGateLeave = 1008 // 离开网关
 	Offline      = 1009 // 断线
+	Test         = 1010 // 测试
 	GateEnd      = 1999 // Gate
 )
 const (

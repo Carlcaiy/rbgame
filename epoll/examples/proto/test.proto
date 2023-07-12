@@ -136,3 +136,10 @@ message Reconnect {
     uint32 hallId = 3;
     uint32 gateId = 4;
 }
+
+// 测试
+message Test {
+    uint32 uid = 1;
+    int64 startTime = 2;
+    int64 endTime = 3;
+}

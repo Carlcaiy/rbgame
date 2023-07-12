@@ -10,9 +10,9 @@ import (
 )
 
 type IUser interface {
-	UserId() uint32
-	GameId() uint32
-	GateId() uint32
+	UserID() uint32
+	GameID() uint32
+	GateID() uint32
 	net.Conn
 }
 
@@ -40,6 +40,7 @@ func (l *BaseLocal) Init() {
 	fmt.Println("base.Init")
 	l.AddRoute(cmd.HeartBeat, l.HeartBeat)
 	l.AddRoute(cmd.Regist, l.Regist)
+	l.AddRoute(cmd.Test, l.TestRequest)
 	l.StartTimer(time.Minute, l.TimerHeartBeat, true)
 }
 
@@ -103,7 +104,7 @@ func (l *BaseLocal) Close(conn *network.Conn) {
 	if conn.ServerConfig == nil {
 		u, ok := conn.Context().(IUser)
 		if ok {
-			l.DelUser(u.UserId())
+			l.DelUser(u.UserID())
 		}
 		return
 	}
@@ -163,6 +164,24 @@ func (l *BaseLocal) HeartBeat(conn *network.Conn, msg *network.Message) error {
 	return nil
 }
 
+func (l *BaseLocal) TestRequest(conn *network.Conn, msg *network.Message) error {
+	data := new(pb.Test)
+	msg.UnPack(data)
+
+	l.AddUser(&UserImplement{
+		userId: data.Uid,
+		Conn:   conn,
+	})
+
+	m := network.NewMessage(data.Uid, network.ST_Client)
+	b, _ := m.Pack(cmd.Test, &pb.Test{
+		Uid:       data.Uid,
+		StartTime: data.StartTime,
+	})
+
+	return l.SendToClient(data.Uid, b)
+}
+
 func (l *BaseLocal) Tick() {
 	l.FrameCheck()
 }
@@ -208,9 +227,9 @@ func (l *BaseLocal) Route(conn *network.Conn, msg *network.Message) error {
 	case network.ST_Hall:
 		return l.SendToHall(msg.UserID(), msg.Bytes())
 	case network.ST_Game:
-		return l.SendToGame(u.GameId(), msg.Bytes())
+		return l.SendToGame(u.GameID(), msg.Bytes())
 	case network.ST_Gate:
-		return l.SendToGate(u.GateId(), msg.Bytes())
+		return l.SendToGate(u.GateID(), msg.Bytes())
 	}
 	return fmt.Errorf("call: not find cmd %d", msg.Cmd())
 }
@@ -291,7 +310,7 @@ func (l *BaseLocal) GetUser(uid uint32) IUser {
 }
 
 func (l *BaseLocal) AddUser(user IUser) {
-	l.m_users[user.UserId()] = user
+	l.m_users[user.UserID()] = user
 }
 
 func (l *BaseLocal) DelUser(uid uint32) {
