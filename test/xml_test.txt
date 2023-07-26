@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <commonserver>
+    <moneyserver>
+      <server svid="28090" ip="172.31.6.116" port="28090"/>
+      <server svid="28091" ip="172.31.6.116" port="28091"/>
+      <server svid="28092" ip="172.31.6.116" port="28092"/>
+      <server svid="28093" ip="172.31.6.116" port="28093"/>
+      <server svid="28094" ip="172.31.6.116" port="28094"/>
+      <server svid="28095" ip="172.31.6.116" port="28095"/>
+      <server svid="28096" ip="172.31.6.116" port="28096"/>
+      <server svid="28097" ip="172.31.6.116" port="28097"/>
+      <server svid="28098" ip="172.31.6.116" port="28098"/>
+      <server svid="28099" ip="172.31.6.116" port="28099"/>
+    </moneyserver>
+    <broadcastserver>
+      <server svid="28100" ip="172.31.6.116" port="28100"/>
+    </broadcastserver>
+    <userserver>
+      <server svid="28001" ip="172.31.6.116" port="28001"/>
+    </userserver>
+    <logserver>
+      <server svid="28003" ip="172.31.6.116" port="28003"/>
+    </logserver>
+    <hallserver>
+      <server svid="28217" level="301" ip="172.31.6.116" port="28217"/>
+      <server svid="28218" level="302" ip="172.31.6.116" port="28218"/>
+      <server svid="28219" level="303" ip="172.31.6.116" port="28219"/>
+      <server svid="28220" level="304" ip="172.31.6.116" port="28220"/>
+      <!--<server svid="28221" level="305" ip="172.31.6.116" port="28221"/>-->
+      <server svid="28222" level="306" ip="172.31.6.116" port="28222"/>
+      <server svid="28223" level="307" ip="172.31.6.116" port="28223"/>
+      <server svid="28224" level="308" ip="172.31.6.116" port="28224"/>
+      <server svid="28225" level="309" ip="172.31.6.116" port="28225"/>
+      <server svid="28226" level="310" ip="172.31.6.116" port="28226"/>
+      <server svid="28227" level="311" ip="172.31.6.116" port="28227"/>
+      <server svid="28228" level="312" ip="172.31.6.116" port="28228"/>
+      <server svid="28229" level="313" ip="172.31.6.116" port="28229"/>
+      <server svid="28230" level="314" ip="172.31.6.116" port="28230"/>
+      <server svid="28231" level="315" ip="172.31.6.116" port="28231"/>
+      <server svid="28232" level="316" ip="172.31.6.116" port="28232"/>
+      <server svid="28233" level="130" ip="172.31.6.116" port="28233"/>
+      <server svid="28234" level="317" ip="172.31.6.116" port="28234"/>
+      <server svid="28235" level="133" ip="172.31.6.116" port="28235"/>
+      <server svid="28236" level="281" ip="172.31.6.116" port="28236"/>
+      <server svid="28237" level="192" ip="172.31.6.116" port="28237"/>
+      <server svid="28238" level="195" ip="172.31.6.116" port="28238"/>
+      <server svid="28239" level="101" ip="172.31.6.116" port="28239"/>
+      <server svid="28240" level="318" ip="172.31.6.116" port="28240"/>
+      <server svid="28241" level="319" ip="172.31.6.116" port="28241"/>
+    </hallserver>
+    <gatewayserver>
+      <server svid="28011" ip="172.31.6.116" port="28011"/>
+      <server svid="28012" ip="172.31.6.116" port="28012"/>
+      <server svid="28013" ip="172.31.6.116" port="28013"/>
+      <server svid="28014" ip="172.31.6.116" port="28014"/>
+      <server svid="28015" ip="172.31.6.116" port="28015"/>
+      <server svid="28016" ip="172.31.6.116" port="28016"/>
+      <server svid="28017" ip="172.31.6.116" port="28017"/>
+      <server svid="28018" ip="172.31.6.116" port="28018"/>
+      <server svid="28019" ip="172.31.6.116" port="28019"/>
+      <server svid="28020" ip="172.31.6.116" port="28020"/>
+    </gatewayserver>
+    <slotserver>
+      <server svid="6033" ip="127.0.0.1" port="6033"/>
+    </slotserver>
+    <chatudpserver>
+      <server dcid="1001" ip="127.0.0.1" port="1107"/>
+    </chatudpserver>
+    <center svid="1" ip="0" port="0"/>
+  </commonserver>
+  <database>
+    <mysql>
+      <main ip="172.31.9.123" port="3306" user="joyfunB" password="joyfunB%!99Y765" dbname="gold_main"/>
+      <member ip="172.31.9.123" port="3306" user="joyfunB" password="joyfunB%!99Y765" dbname="gold_member"/>
+    </mysql>
+    <redis>
+      <!-- mt & online 配置保持一致 测试 -->
+      <mt ip="172.31.9.123" port="6302"/>
+      <online ip="172.31.9.123" port="6302"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <cache ip="172.31.9.123" port="6305"/>
+      <tablelog ip="172.31.9.123" port="6311"/>
+      <log ip="172.31.9.123" port="6311"/>
+      <set ip="172.31.9.123" port="6309"/>
+      <review ip="172.31.9.123" port="6312"/>
+      <webshare ip="172.31.9.123" port="6312"/>
+      <mstat ip="172.31.9.123" port="6308"/>
+      <slot ip="172.31.9.123" port="6312"/>
+      <config ip="172.31.9.123" port="6310"/>
+      <member ip="172.31.9.123" port="6304"/>
+    </redis>
+  </database>
+</application>
