@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type options struct {
+type Options struct {
 	network   string
 	addr      string
 	readTime  time.Duration
@@ -15,46 +15,46 @@ type options struct {
 	password  string
 }
 
-type optfunc func(o *options)
+type optfunc func(o *Options)
 
 func Network(n string) optfunc {
-	return func(o *options) {
+	return func(o *Options) {
 		o.network = n
 	}
 }
 
 func Addr(s string) optfunc {
-	return func(o *options) {
+	return func(o *Options) {
 		o.addr = s
 	}
 }
 
 func ReadTime(t time.Duration) optfunc {
-	return func(o *options) {
+	return func(o *Options) {
 		o.readTime = t
 	}
 }
 
 func WriteTime(t time.Duration) optfunc {
-	return func(o *options) {
+	return func(o *Options) {
 		o.writeTime = t
 	}
 }
 
 func UserName(s string) optfunc {
-	return func(o *options) {
+	return func(o *Options) {
 		o.userName = s
 	}
 }
 
 func Password(s string) optfunc {
-	return func(o *options) {
+	return func(o *Options) {
 		o.password = s
 	}
 }
 
 func StartOption(sli ...optfunc) {
-	opt := new(options)
+	opt := new(Options)
 	for _, f := range sli {
 		f(opt)
 	}
