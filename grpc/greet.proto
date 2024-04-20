@@ -1,18 +1,27 @@
 syntax = "proto3";
-option go_package=".;main";
+option go_package="./pb; pb";
 
 // The greeting service definition.
 service Greeter {
     // Sends a greeting
-    rpc OneToOne (Request) returns (Reply) {}
-    rpc MulToOne (stream Request) returns (Reply) {}
-    rpc OneToMul (Request) returns (stream Reply) {}
-    rpc MulToMul (stream Request) returns (stream Reply) {}
+    rpc Regist (ReqRegist) returns (RspRegist) {}
+    rpc Login (ReqLogin) returns (Rs)
 }
 
 // The request message containing the user's name.
-message Request {
-    string name = 1;
+message ReqRegist {
+    int32 uid = 1;
+    int32 password = 2;
+}
+
+message RspRegist {
+    int32 ret = 1;
+    string desc = 2;
+}
+
+message ReqLogin {
+    int32 uid = 1;
+    int32 password = 2;
 }
 
 // The response message containing the greetings

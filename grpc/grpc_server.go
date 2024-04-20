@@ -6,36 +6,38 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"rbgame/grpc/pb"
 
 	"google.golang.org/grpc"
 )
 
 type Greet struct {
-	UnimplementedGreeterServer
+	pb.UnimplementedGreeterServer
 }
 
-func (p *Greet) OneToOne(ctx context.Context, req *Request) (*Reply, error) {
+func (p *Greet) OneToOne(ctx context.Context, req *pb.Request) (*pb.Reply, error) {
+	fmt.Println(ctx.Value("name"))
 	if req.Name == "hello" {
-		return &Reply{Message: "hi"}, nil
+		return &pb.Reply{Message: "hi"}, nil
 	} else if req.Name == "good" {
-		return &Reply{Message: "bye"}, nil
+		return &pb.Reply{Message: "bye"}, nil
 	} else {
 		return nil, errors.New("nothing")
 	}
 }
 
-func (p *Greet) OneToMul(req *Request, reply Greeter_OneToMulServer) error {
+func (p *Greet) OneToMul(req *pb.Request, reply pb.Greeter_OneToMulServer) error {
 	if req.Name == "yoyo" {
-		reply.Send(&Reply{Message: "hey guys"})
-		reply.Send(&Reply{Message: "hey guys"})
-		reply.Send(&Reply{Message: "hey guys"})
-		reply.Send(&Reply{Message: "hey guys"})
+		reply.Send(&pb.Reply{Message: "hey guys"})
+		reply.Send(&pb.Reply{Message: "hey guys"})
+		reply.Send(&pb.Reply{Message: "hey guys"})
+		reply.Send(&pb.Reply{Message: "hey guys"})
 		return nil
 	}
 	return errors.New("nothing")
 }
 
-func (p *Greet) MulToOne(req Greeter_MulToOneServer) error {
+func (p *Greet) MulToOne(req pb.Greeter_MulToOneServer) error {
 	for i := 0; i < 4; i++ {
 		request, err := req.Recv()
 		fmt.Println(request.Name)
@@ -44,18 +46,18 @@ func (p *Greet) MulToOne(req Greeter_MulToOneServer) error {
 			break
 		}
 	}
-	req.SendAndClose(&Reply{Message: "completed"})
+	req.SendAndClose(&pb.Reply{Message: "completed"})
 	return nil
 }
 
-func (p *Greet) MulToMul(mtm Greeter_MulToMulServer) error {
+func (p *Greet) MulToMul(mtm pb.Greeter_MulToMulServer) error {
 	for {
 		recv, err := mtm.Recv()
 		fmt.Println("Recv", recv.Name, err)
 		if err != nil {
 			break
 		}
-		err = mtm.Send(&Reply{Message: recv.Name + "1"})
+		err = mtm.Send(&pb.Reply{Message: recv.Name + "1"})
 		if err != nil {
 			break
 		}
@@ -63,9 +65,17 @@ func (p *Greet) MulToMul(mtm Greeter_MulToMulServer) error {
 	return nil
 }
 
+func XXX(srv interface{}, stream grpc.ServerStream) error {
+
+	return nil
+}
+
 func main() {
-	grpcServer := grpc.NewServer()
-	RegisterGreeterServer(grpcServer, &Greet{})
+	grpcServer := grpc.NewServer(
+		grpc.NumStreamWorkers(1),
+		grpc.UnknownServiceHandler(XXX),
+	)
+	pb.RegisterGreeterServer(grpcServer, &Greet{})
 
 	ln, err := net.Listen("tcp", "localhost:8888")
 	if err != nil {
