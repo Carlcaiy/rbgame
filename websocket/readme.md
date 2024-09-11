@@ -1,0 +1,7 @@
+# gobwas的使用
+
+客户端和服务端全部使用ReadServerText和WriteServerText，就不会有问题
+客户端和服务端全部使用ReadClientText和WriteClientText，就不会有问题
+
+假如客户端和服务端使用的读写接口不一致，就会导致数据不一致
+

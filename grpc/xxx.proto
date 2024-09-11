@@ -1,0 +1,30 @@
+syntax = "proto3";
+option go_package="./pb; pb";
+
+// The greeting service definition.
+service Greeter {
+    // Sends a greeting
+    rpc Regist (ReqRegist) returns (RspRegist) {}
+    rpc Login (ReqLogin) returns (Rs)
+}
+
+// The request message containing the user's name.
+message ReqRegist {
+    int32 uid = 1;
+    int32 password = 2;
+}
+
+message RspRegist {
+    int32 ret = 1;
+    string desc = 2;
+}
+
+message ReqLogin {
+    int32 uid = 1;
+    int32 password = 2;
+}
+
+// The response message containing the greetings
+message Reply {
+    string message = 1;
+}

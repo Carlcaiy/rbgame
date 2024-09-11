@@ -16,7 +16,7 @@ func main1() {
 
 	c := colly.NewCollector(
 
-		colly.AllowedDomains("emojipedia.org"),
+		colly.AllowedDomains("https://www.emojiall.com/zh-hant"),
 	)
 
 	// Callback for when a scraped page contains an article element

@@ -1,6 +1,10 @@
 package test
 
-import "testing"
+import (
+	"fmt"
+	"strconv"
+	"testing"
+)
 
 const (
 	_  = iota             // iota=0
@@ -24,4 +28,12 @@ const (
 
 func TestFlag(t *testing.T) {
 	t.Logf("Read=%d Write=%d Exec=%d\n", FlagRead, FlagWrite, FlagExec)
+}
+
+func TestParseF(t *testing.T) {
+	str := "1.234234"
+	f, err := strconv.ParseFloat(str, 64)
+	fmt.Println(f, err)
+	p := int64(f * 100)
+	fmt.Println(p)
 }

@@ -136,3 +136,18 @@ func checkErr(err error) {
 		panic(err)
 	}
 }
+
+func TestImg(t *testing.T) {
+	db, err := sql.Open("mysql", "dev:^PwdOfDev2020$@tcp(192.168.6.17:3306)/tongits_admin?charset=utf8mb4&parseTime=True&loc=Local")
+	checkError(err)
+	result, err := db.Query("SELECT upload_path FROM `image_library` WHERE id >= 440")
+	checkError(err)
+	str := "zip myzip"
+	for result.Next() {
+		var upload_path string
+		result.Scan(&upload_path)
+		str += " ." + upload_path
+	}
+	db.Close()
+	fmt.Println(str)
+}

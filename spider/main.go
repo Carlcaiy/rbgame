@@ -14,7 +14,7 @@ func main() {
 
 	// 请求html页面
 
-	res, err := http.Get("http://metalsucks.net")
+	res, err := http.Get("https://www.emojiall.com/zh-hant/emoji-art-list?page=1")
 
 	if err != nil {
 
@@ -43,17 +43,13 @@ func main() {
 	}
 
 	// Find the review items
+	fmt.Println("find")
+	doc.Find(".w-100 .h-100 .fontsize_1x").Each(func(i int, s *goquery.Selection) {
+		fmt.Println(s.Text())
+	})
 
-	doc.Find(".sidebar-reviews article .content-block").Each(func(i int, s *goquery.Selection) {
-
-		// For each item found, get the band and title
-
-		band := s.Find("a").Text()
-
-		title := s.Find("i").Text()
-
-		fmt.Printf("Review %d: %s - %s\n", i, band, title)
-
+	doc.Find("li").Each(func(i int, s *goquery.Selection) {
+		fmt.Println(s.Add(".col-auto").Add("a").Text())
 	})
 
 }
